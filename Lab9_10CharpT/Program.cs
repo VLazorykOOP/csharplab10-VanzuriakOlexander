@@ -9,7 +9,7 @@ class InvalidTriangleException : Exception
 
 class Triangle
 {
-    private int a, b, c;
+    private int[] sides = new int[3];
     private string color;
 
     public Triangle(int f, int s, int t)
@@ -19,9 +19,9 @@ class Triangle
             throw new InvalidTriangleException("Invalid triangle sides");
         }
 
-        a = f;
-        b = s;
-        c = t;
+        sides[0] = f;
+        sides[1] = s;
+        sides[2] = t;
     }
 
     public Triangle(int f, int s, int t, string col) : this(f, s, t)
@@ -31,51 +31,34 @@ class Triangle
 
     public void Print()
     {
-        Console.WriteLine($"Triangle lines: a = {a}, b = {b}, c = {c}");
+        Console.WriteLine($"Triangle lines: a = {sides[0]}, b = {sides[1]}, c = {sides[2]}");
     }
 
     public int Perimeter()
     {
-        return a + b + c;
+        return sides[0] + sides[1] + sides[2];
     }
 
     public double Area()
     {
         double halfPerimeter = Perimeter() / 2.0;
-        return Math.Sqrt(halfPerimeter * (halfPerimeter - a) * (halfPerimeter - b) * (halfPerimeter - c));
+        return Math.Sqrt(halfPerimeter * (halfPerimeter - sides[0]) * (halfPerimeter - sides[1]) * (halfPerimeter - sides[2]));
     }
 
-    public int GetFirst()
+    public int GetSide(int index)
     {
-        return a;
+        if (index < 0 || index >= sides.Length)
+        {
+            throw new IndexOutOfRangeException("Index is out of range for triangle sides array");
+        }
+
+        return sides[index];
     }
 
-    public int GetSecond()
-    {
-        return b;
-    }
-
-    public int GetThird()
-    {
-        return c;
-    }
-
-    public void SetFirst(int newValue)
+    public void SetSide(int index, int newValue)
     {
         ValidateSide(newValue);
-        a = newValue;
-    }
-
-    public void SetSecond(int newValue)
-    {
-        ValidateSide(newValue);
-        b = newValue;
-    }
-
-    public void SetThird(int newValue)
-    {
-        ValidateSide(newValue);
-        c = newValue;
+        sides[index] = newValue;
     }
 
     public string GetColor()
@@ -99,6 +82,7 @@ class Triangle
         }
     }
 }
+
 
 class FacultyDayEventArgs : EventArgs
 {
